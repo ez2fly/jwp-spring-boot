@@ -1,11 +1,29 @@
 package next.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.ForeignKey;
+
+@Entity
 public class Question {
-	private long questionId;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-	private String writer;
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
+	private User writer;
 
 	private String title;
 
@@ -13,31 +31,27 @@ public class Question {
 
 	private Date createdDate;
 
-	private int countOfComment;
+	@OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+	@OrderBy("answerId ASC")
+	private List<Answer> answers;
 
 	public Question() {
 	}
 
-	public Question(String writer, String title, String contents) {
-		this(0, writer, title, contents, new Date(), 0);
-	}
-
-	public Question(long questionId, String writer, String title, String contents, Date createdDate,
-			int countOfComment) {
-		this.questionId = questionId;
+	public void setWriter(User writer) {
 		this.writer = writer;
-		this.title = title;
-		this.contents = contents;
+	}
+
+	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
-		this.countOfComment = countOfComment;
 	}
 
-	public long getQuestionId() {
-		return questionId;
+	public long getId() {
+		return id;
 	}
 
-	public void setQuestionId(long questionId) {
-		this.questionId = questionId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -56,7 +70,7 @@ public class Question {
 		this.contents = contents;
 	}
 
-	public String getWriter() {
+	public User getWriter() {
 		return writer;
 	}
 
@@ -67,13 +81,18 @@ public class Question {
 	public long getTimeFromCreateDate() {
 		return this.createdDate.getTime();
 	}
+	
+	
+	public List<Answer> getAnswers() {
+		return answers;
+	}
 
-	public int getCountOfComment() {
-		return countOfComment;
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
 	}
 	
-	public Question newQuestion(User user) {
-		return new Question(user.getUserId(), title, contents);
+	public int getCountOfAnswer() {
+		return answers.size();
 	}
 	
 	public boolean isSameUser(User user) {
@@ -86,16 +105,10 @@ public class Question {
 	}
 
 	@Override
-	public String toString() {
-		return "Question [questionId=" + questionId + ", writer=" + writer + ", title=" + title + ", contents="
-				+ contents + ", createdDate=" + createdDate + ", countOfComment=" + countOfComment + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (questionId ^ (questionId >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
 
@@ -108,7 +121,7 @@ public class Question {
 		if (getClass() != obj.getClass())
 			return false;
 		Question other = (Question) obj;
-		if (questionId != other.questionId)
+		if (id != other.id)
 			return false;
 		return true;
 	}

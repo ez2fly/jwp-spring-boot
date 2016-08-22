@@ -1,21 +1,30 @@
 package next.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
+@Entity
 public class User {
 	public static final GuestUser GUEST_USER = new GuestUser();
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 	@Size(min = 3, max = 12)
+	@Column(nullable = false)
 	private String userId;
-	
 	@Size(min = 3, max = 15)
+	@Column(nullable = false)
 	private String password;
-	
 	@Size(min = 3, max = 12)
+	@Column(nullable = false)
 	private String name;
-	
 	@Email
 	private String email;
 
@@ -28,7 +37,22 @@ public class User {
 		this.name = name;
 		this.email = email;
 	}
+	
+	public User(User src) {
+		this.userId = src.userId;
+		this.password = src.password;
+		this.name = src.name;
+		this.email = src.email;
+	}
 
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 	public String getUserId() {
 		return userId;
 	}

@@ -2,34 +2,39 @@ package next.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Answer {
-	private long answerId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 	
-	private String writer;
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_writer"))
+	private User writer;
 	
 	private String contents;
 	
 	private Date createdDate;
 
-	private long questionId;
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_writer"))
+	private Question question;
 	
-	public Answer(String writer, String contents, long questionId) {
-		this(0, writer, contents, new Date(), questionId);
+	public Answer() { }
+	
+	public long getId() {
+		return id;
 	}
 	
-	public Answer(long answerId, String writer, String contents, Date createdDate, long questionId) {
-		this.answerId = answerId;
-		this.writer = writer;
-		this.contents = contents;
-		this.createdDate = createdDate;
-		this.questionId = questionId;
-	}
-	
-	public long getAnswerId() {
-		return answerId;
-	}
-	
-	public String getWriter() {
+	public User getWriter() {
 		return writer;
 	}
 
@@ -45,10 +50,30 @@ public class Answer {
 		return this.createdDate.getTime();
 	}
 	
-	public long getQuestionId() {
-		return questionId;
+	public Question getQuestion() {
+		return question;
 	}
 	
+	public void setId(long id) {
+		this.id =id;
+	}
+
+	public void setWriter(User writer) {
+		this.writer = writer;
+	}
+
+	public void setContents(String contents) {
+		this.contents = contents;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
 	public boolean isSameUser(User user) {
 		if (user == null) {
 			return false;
@@ -60,7 +85,7 @@ public class Answer {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (answerId ^ (answerId >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
 
@@ -73,15 +98,8 @@ public class Answer {
 		if (getClass() != obj.getClass())
 			return false;
 		Answer other = (Answer) obj;
-		if (answerId != other.answerId)
+		if (id != other.id)
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Answer [answerId=" + answerId + ", writer=" + writer
-				+ ", contents=" + contents + ", createdDate=" + createdDate
-				+ ", questionId=" + questionId + "]";
 	}
 }
