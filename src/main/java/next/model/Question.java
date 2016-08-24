@@ -17,6 +17,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Formula;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.ForeignKey;
 
 @Entity
@@ -152,7 +154,7 @@ public class Question {
 	
 	@Override
 	public String toString() {
-		return "Question [questionId=" + questionId + ", writer=" + writer + ", title=" + title + ", contents="
+		return "Question [questionId=" + questionId + ", writer=" + writer.getName() + ", title=" + title + ", contents="
 				+ contents + ", createdDate=" + createdDate + ", countOfAnswer=" + countOfAnswer + "]";
 	}
 }

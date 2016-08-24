@@ -26,8 +26,8 @@ public class DBInitializer {
 		User admin, user;
 		Question question;
 		
-		admin = new User("admin", "admin", "관리자", "admin@admin.com");
-		user = new User("user", "user", "사용자", "user@user.com");
+		admin = new User("admin", "admin1234", "관리자", "admin@admin.com");
+		user = new User("user", "user1234", "사용자", "user@user.com");
 		userRepository.save(admin);
 		userRepository.save(user);
 		

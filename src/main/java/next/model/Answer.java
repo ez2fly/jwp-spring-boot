@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Answer {
 	@Id
@@ -30,6 +32,7 @@ public class Answer {
 
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_question"))
+	@JsonBackReference
 	private Question question;
 	
 	
@@ -43,8 +46,6 @@ public class Answer {
 		this.question = question;
 		this.createdDate = new Date();
 	}
-	
-	
 	
 	public long getAnswerId() {
 		return answerId;
@@ -121,8 +122,9 @@ public class Answer {
 	
 	@Override
 	public String toString() {
-		return "Answer [answerId=" + answerId + ", writer=" + writer
-				+ ", contents=" + contents + ", createdDate=" + createdDate
-				+ ", questionId=" + (question == null ? 0 : question.getQuestionId()) + "]";
+		String json = "Answer [answerId=" + answerId + ", writerName=" + writer.getName()
+		+ ", contents=" + contents + ", createdDate=" + createdDate
+		+ ", questionId=" + question.getQuestionId() + "]";
+		return json; 
 	}
 }

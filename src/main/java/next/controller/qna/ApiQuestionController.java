@@ -54,25 +54,21 @@ public class ApiQuestionController {
 	}
 	
 	@RequestMapping(value = "/{questionId}/answers", method = RequestMethod.POST)
-	public Map<String, Object> addAnswer(@LoginUser User loginUser, @PathVariable long questionId, String contents) {
-		Map<String, Object> values = Maps.newHashMap();
+	public Map<String, Object> addAnswer(@LoginUser User loginUser, @PathVariable long questionId, String contents) throws Exception {
+		log.debug("loginUser : {}, questionId : {}, contents : {}", loginUser.getName(), questionId, contents);
 		
-		try {
-			log.debug("loginUser : {}, questionId : {}, contents : {}", loginUser.getName(), questionId, contents);
-			
-	    	Question question = questionRepository.findOne(questionId);
-	    	if (question == null) {
-	    		log.debug("존재하지 않는 질문입니다.");
-	    		throw new EmptyResultDataAccessException("존재하지 않는 질문입니다.", 1);
-	    	}
-	    	
-	    	Answer answer = new Answer(loginUser, contents, question);
-	    	Answer savedAnswer = answerRepository.save(answer);
-			values.put("answer", savedAnswer);
-			values.put("result", Result.ok());
-		}catch(Exception e) {
-			log.debug("Exception 발생 : " + e.getMessage());
-		}
+    	Question question = questionRepository.findOne(questionId);
+    	if (question == null) {
+    		log.debug("존재하지 않는 질문입니다.");
+    		throw new EmptyResultDataAccessException("존재하지 않는 질문입니다.", 1);
+    	}
+    	Answer answer = new Answer(loginUser, contents, question);
+    	Answer savedAnswer = answerRepository.save(answer);
+    	log.debug("savedAnswer : " + savedAnswer.toString());
+    	
+    	Map<String, Object> values = Maps.newHashMap();
+		values.put("answer", savedAnswer);
+		values.put("result", Result.ok());
 		return values;
 	}
 	

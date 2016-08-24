@@ -18,7 +18,7 @@ public class User {
 	private long id;
 	@Size(min = 3, max = 12)
 	private String userId;
-	@Size(min = 3, max = 12)
+	@Size(min = 8, max = 12)
 	private String password;
 	@Size(min = 3, max = 20)
 	private String name;
@@ -35,14 +35,6 @@ public class User {
 		this.name = name;
 		this.email = email;
 	}
-	
-	public User(User src) {
-		this.userId = src.userId;
-		this.password = src.password;
-		this.name = src.name;
-		this.email = src.email;
-	}
-
 	
 	public long getId() {
 		return id;
