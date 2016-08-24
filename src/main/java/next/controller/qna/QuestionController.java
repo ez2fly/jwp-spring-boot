@@ -1,9 +1,9 @@
 package next.controller.qna;
 
 import next.CannotOperateException;
-import next.dao.QuestionDao;
 import next.model.Question;
 import next.model.User;
+import next.repository.QuestionRepository;
 import next.service.QnaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import core.web.argumentresolver.LoginUser;
 @RequestMapping("/questions")
 public class QuestionController {
 	@Autowired
-	private QuestionDao questionDao;
+	private QuestionRepository questionRepository;
 	@Autowired
 	private QnaService qnaService;
 
@@ -44,7 +44,8 @@ public class QuestionController {
 		if (loginUser.isGuestUser()) {
 			return "redirect:/users/loginForm";
 		}
-		questionDao.insert(question.newQuestion(loginUser));
+		question.setWriter(loginUser);
+		questionRepository.save(question);
 		return "redirect:/";
 	}
 
@@ -72,7 +73,7 @@ public class QuestionController {
 		} catch (CannotOperateException e) {
 			model.addAttribute("question", qnaService.findById(questionId));
 			model.addAttribute("errorMessage", e.getMessage());
-			return "show";
+			return "redirect:/qna/show";			// 제대로 동작 안됨. 수정 필요
 		}
 	}
 }

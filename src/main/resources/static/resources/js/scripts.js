@@ -22,7 +22,7 @@ function onSuccess(json, status){
   if (result.status) {
 	  var answer = json.answer;
 	  var answerTemplate = $("#answerTemplate").html();
-	  var template = answerTemplate.format(answer.writer, new Date(answer.createdDate), answer.contents, answer.questionId, answer.answerId);
+	  var template = answerTemplate.format(answer.writer.name, new Date(answer.createdDate), answer.contents, answer.questionId, answer.answerId);
 	  $(".qna-comment-slipp-articles").prepend(template);	  
   } else {
 	  alert(result.message);

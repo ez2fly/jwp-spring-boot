@@ -2,6 +2,7 @@ package next.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -9,31 +10,50 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Answer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private long answerId;
 	
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_writer"))
 	private User writer;
 	
+	@Size(min = 1, max = 5000)
 	private String contents;
 	
+	@Column(nullable = false)
 	private Date createdDate;
 
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_writer"))
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_question"))
 	private Question question;
 	
-	public Answer() { }
 	
-	public long getId() {
-		return id;
+	public Answer() { 
+		this.createdDate = new Date();
 	}
 	
+	public Answer(User writer, String contents, Question question) {
+		this.writer = writer;
+		this.contents = contents;
+		this.question = question;
+		this.createdDate = new Date();
+	}
+	
+	
+	
+	public long getAnswerId() {
+		return answerId;
+	}
+
+	public void setAnswerId(long answerId) {
+		this.answerId = answerId;
+	}
+
 	public User getWriter() {
 		return writer;
 	}
@@ -52,10 +72,6 @@ public class Answer {
 	
 	public Question getQuestion() {
 		return question;
-	}
-	
-	public void setId(long id) {
-		this.id =id;
 	}
 
 	public void setWriter(User writer) {
@@ -85,7 +101,7 @@ public class Answer {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + (int) (answerId ^ (answerId >>> 32));
 		return result;
 	}
 
@@ -98,8 +114,15 @@ public class Answer {
 		if (getClass() != obj.getClass())
 			return false;
 		Answer other = (Answer) obj;
-		if (id != other.id)
+		if (answerId != other.answerId)
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "Answer [answerId=" + answerId + ", writer=" + writer
+				+ ", contents=" + contents + ", createdDate=" + createdDate
+				+ ", questionId=" + (question == null ? 0 : question.getQuestionId()) + "]";
 	}
 }

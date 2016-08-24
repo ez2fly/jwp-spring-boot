@@ -17,15 +17,13 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	@Size(min = 3, max = 12)
-	@Column(nullable = false)
 	private String userId;
-	@Size(min = 3, max = 15)
-	@Column(nullable = false)
-	private String password;
 	@Size(min = 3, max = 12)
-	@Column(nullable = false)
+	private String password;
+	@Size(min = 3, max = 20)
 	private String name;
 	@Email
+	@Column(length=50)
 	private String email;
 
 	public User() {
@@ -100,6 +98,9 @@ public class User {
 	}
 
 	public boolean isSameUser(User user) {
+		if (user == null) {
+			return false;
+		}
 		return isSameUser(user.getUserId());
 	}
 
