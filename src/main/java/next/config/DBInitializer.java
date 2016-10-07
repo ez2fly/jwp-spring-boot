@@ -9,6 +9,7 @@ import next.model.Answer;
 import next.model.Question;
 import next.model.User;
 import next.repository.AnswerRepository;
+import next.repository.FidoRepository;
 import next.repository.QuestionRepository;
 import next.repository.UserRepository;
 
@@ -20,6 +21,8 @@ public class DBInitializer {
 	private QuestionRepository questionRepository;
 	@Autowired
 	private AnswerRepository answerRepository;
+	@Autowired
+	private FidoRepository fidoRepository;
 	
 	@PostConstruct
 	public void init() {

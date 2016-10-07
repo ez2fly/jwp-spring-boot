@@ -3,3 +3,5 @@
 <script src="/resources/js/jquery-2.2.0.min.js"></script>
 <script src="/resources/js/bootstrap.min.js"></script>
 <script src="/resources/js/scripts.js"></script>
+<script src="/resources/js/mswebauthn.js"></script>
+<script src="/resources/js/fidoauth.js"></script>

@@ -33,6 +33,8 @@ function onError(xhr, status) {
   alert("error");
 }
 
+
+
 $(".qna-comment").on("click", ".form-delete", deleteAnswer);
 
 function deleteAnswer(e) {
